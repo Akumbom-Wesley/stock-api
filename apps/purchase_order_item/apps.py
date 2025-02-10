@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class PurchaseOrderItemConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'purchase_order_item'
+    name = 'apps.purchase_order_item'
