@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
 from apps.core.models import BaseModel
 
 
@@ -30,6 +29,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField(unique=True)
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     phone_number = models.CharField(max_length=13, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []  # No username field
+    REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
         return self.email
