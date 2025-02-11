@@ -37,6 +37,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('apps.user.auth-urls')),
     path('api/user/', include('apps.user.urls')),
+    path('api/suppliers/', include('apps.supplier.urls')),
 
   # Swagger URLs
     re_path(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
