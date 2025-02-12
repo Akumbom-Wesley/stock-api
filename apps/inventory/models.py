@@ -18,5 +18,9 @@ class Inventory(BaseModel, models.Model):
             self.last_restocked_at = timezone.now()
         super().save(*args, **kwargs)
 
+    def is_low_stock(self):
+        """Returns True if quantity is below threshold."""
+        return self.quantity < self.low_stock_threshold
+
     def __str__(self):
         return f"Inventory for {self.product.name}"
