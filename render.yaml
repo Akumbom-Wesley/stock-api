@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: stock-mngmt
+    env: docker
+    repo: https://github.com/Akumbom-Wesley/stock-api
+    branch: main
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
