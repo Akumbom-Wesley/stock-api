@@ -35,10 +35,7 @@ LOCAL_APPS = [
     'apps.core',
     'apps.inventory',
     'apps.product',
-    'apps.purchase_order',
-    'apps.purchase_order_item',
     'apps.supplier',
-    'apps.transaction',
     'apps.user',
 ]
 
