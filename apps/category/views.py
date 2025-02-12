@@ -1,19 +1,42 @@
 # apps/category/views.py
 from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Category
 from .serializers import CategorySerializer
 from rest_framework.permissions import IsAuthenticated
 
+from ..supplier.models import Supplier
+
 
 # Create Category
-class CategoryCreateView(generics.CreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def create_category(request):
+    """
+    Create a new category and assign the owner to the logged-in user's supplier account.
+    """
+    try:
+        # Get the Supplier instance associated with the logged-in user
+        supplier = Supplier.objects.get(user=request.user)
+
+        data = request.data.copy()
+        data['supplier'] = supplier.id  # Set the owner to the supplier's ID
+
+        serializer = CategorySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(supplier=supplier)  # Pass the supplier instance
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    except Supplier.DoesNotExist:
+        return Response(
+            {"error": "You must be registered as a supplier to create categories"},
+            status=status.HTTP_403_FORBIDDEN
+        )
 
 
 # List Categories
